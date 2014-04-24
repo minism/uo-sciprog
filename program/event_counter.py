@@ -55,7 +55,7 @@ def get_events(latitude=None, longitude=None, radius=None,
       if not exclude:
         events.append(event)
 
-  return events[:1000]
+  return events
 
 
 # Data structure representing a single event

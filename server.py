@@ -30,12 +30,16 @@ def validate_parameters(params):
         params[key] = int(params[key])
       except ValueError:
         return "%s must be an integer" % key
+    else:
+      params[key] = None
   for key in ('latitude', 'longitude', 'radius', 'threshold'):
     if params.get(key):
       try:
         params[key] = float(params[key])
       except ValueError:
         return "%s must be a number" % key
+    else:
+      params[key] = None
   return None
 
 
