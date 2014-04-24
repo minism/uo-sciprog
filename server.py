@@ -13,7 +13,7 @@ DEFAULT_PARAMS = [
   # Solution 2: All events.
   {},
   # Solution 3: All events that occurred within the longtitude range -75 to -150
-  {'start_longitude': -150, 'end_longitude': -75, 'circular_query': False},
+  {'start_longitude': -150, 'end_longitude': -75, 'circular_query': '0'},
   # Solution 3: All events of magnitude > 7.5
   {'threshold': 7.5},
   # Solution 5: All events in 100 mile radius of Seattle, WA.
