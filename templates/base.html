@@ -12,12 +12,21 @@
 <body>
   <div class="navbar navbar-default" role="navigation">
     <ul class="nav navbar-nav">
-      <li><a href="/1">Event counter</a></li>
-      <li><a href="/2">Solution 2</a></li>
-      <li><a href="/3">Solution 3</a></li>
-      <li><a href="/4">Solution 4</a></li>
-      <li><a href="/5">Solution 5</a></li>
-      <li><a href="/6">Solution 6</a></li>
+      <li {% if title == 'Event counter' %} class="active" {% endif %}>
+        <a href="/1">1. Event counter</a>
+      </li>
+      <li {% if title == 'Cluster detection' %} class="active" {% endif %}>
+        <a href="/2">2. Cluster detection</a>
+      </li>
+      <li {% if title == 'Spacial plot' %} class="active" {% endif %}>
+        <a href="/3">3. Spacial plot</a>
+      </li>
+      <li {% if title == 'Temporal plot' %} class="active" {% endif %}>
+        <a href="/4">4. Temporal plot</a>
+      </li>
+      <li {% if title == 'Multiaxis' %} class="active" {% endif %}>
+        <a href="/5">5. Multiaxis</a>
+      </li>
     </ul>
   </div>
 
