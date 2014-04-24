@@ -15,8 +15,7 @@ EARTH_RADIUS = 3960
 def get_events(origin_latitude=None, origin_longitude=None, radius=None,
                start_latitude=None, start_longitude=None,
                end_latitude=None, end_longitude=None,
-               start_year=None, end_year=None, threshold=None,
-               circular_query=True):
+               start_year=None, end_year=None, threshold=None):
   """Given some parameters, return a filtered table of earthquake events.
 
   Args:
@@ -30,7 +29,6 @@ def get_events(origin_latitude=None, origin_longitude=None, radius=None,
     start: (int) Year to begin filtering from.
     end: (int) Year to stop filtering from.
     threshold: (float) Magnitude threshold to filter above.
-    circular_query: Whether to perform a circular or rectangular query.
 
   Returns:
     List of Event objects, sorted by time.
@@ -43,21 +41,19 @@ def get_events(origin_latitude=None, origin_longitude=None, radius=None,
       event = parse_row(row)
       exclude = False
 
-      if circular_query:
-        # Determine if event is within specified area for a radius query
-        if all( (origin_latitude, origin_longitude, radius) ):
-          if geo_distance(
-              event.latitude, event.longitude, 
-              origin_latitude, origin_longitude) > radius:
-            exclude = True
-
-      else:
-        # Determine if event is within specified area for a rectangular query
-        if (start_latitude is not None and event.latitude < start_latitude or
-            start_longitude is not None and event.longitude < start_longitude or
-            end_latitude is not None and event.latitude > end_latitude or
-            end_longitude is not None and event.longitude > end_longitude):
+      # Determine if event is within specified area for a radius query
+      if all( (origin_latitude, origin_longitude, radius) ):
+        if geo_distance(
+            event.latitude, event.longitude, 
+            origin_latitude, origin_longitude) > radius:
           exclude = True
+
+      # Determine if event is within specified area for a rectangular query
+      if (start_latitude is not None and event.latitude < start_latitude or
+          start_longitude is not None and event.longitude < start_longitude or
+          end_latitude is not None and event.latitude > end_latitude or
+          end_longitude is not None and event.longitude > end_longitude):
+        exclude = True
 
       # Determine if event is within specified time
       if start_year and event.year < start_year:

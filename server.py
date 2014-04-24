@@ -6,6 +6,9 @@ from program import event_counter
 app = flask.Flask(__name__)
 
 
+# TODO fix form positioning
+
+
 # Default parameter values for solutions
 DEFAULT_PARAMS = [
   # Solution 1: All events in 100 mile radius of Seattle, WA.
@@ -13,7 +16,7 @@ DEFAULT_PARAMS = [
   # Solution 2: All events.
   {},
   # Solution 3: All events that occurred within the longtitude range -75 to -150
-  {'start_longitude': -150, 'end_longitude': -75, 'circular_query': '0'},
+  {'start_longitude': -150, 'end_longitude': -75, 'cq': '0'},
   # Solution 3: All events of magnitude > 7.5
   {'threshold': 7.5},
   # Solution 5: All events in 100 mile radius of Seattle, WA.
@@ -25,7 +28,7 @@ def build_parameters(request_args, origin_latitude=None, origin_longitude=None,
                      radius=None, start_latitude=None, start_longitude=None,
                      end_latitude=None, end_longitude=None,
                      start_year=None, end_year=None, threshold=None,
-                     circular_query=True):
+                     cq=True):
   """Build a dictionary of event counter parameters.
 
   Use provided defaults, overridden by any arguments present in the request.
@@ -41,7 +44,7 @@ def build_parameters(request_args, origin_latitude=None, origin_longitude=None,
     'start_year': request_args.get('s', start_year),
     'end_year': request_args.get('e', end_year),
     'threshold': request_args.get('m', threshold),
-    'circular_query': request_args.get('cq', circular_query),
+    'cq': request_args.get('cq', cq),
   }
 
 
@@ -66,8 +69,23 @@ def validate_parameters(params):
         return "%s must be a number" % key
     else:
       params[key] = None
-  params['circular_query'] = params['circular_query'] != '0'
+  params['cq'] = params['cq'] != '0'
   return None
+
+
+def filter_query_type(params):
+  """Prune event counter parameters be EITHER a circular or rectangular query"""
+  params = params.copy()
+  if params.pop('cq', True):
+    for key in ('start_latitude', 'start_longitude', 
+                'end_latitude', 'end_longitude'):
+      if key in params:
+        del params[key]
+  else:
+    for key in ('origin_latitude', 'origin_longitude', 'radius'):
+      if key in params:
+        del params[key]
+  return params
 
 
 @app.route('/')
@@ -79,7 +97,9 @@ def home():
 def solution(index):
   params = build_parameters(flask.request.args, **DEFAULT_PARAMS[index - 1])
   error = validate_parameters(params)
-  events = event_counter.get_events(**params) if not error else []
+  events = []
+  if not error:
+    events = event_counter.get_events(**filter_query_type(params))
 
   # Load view for solution
   try:

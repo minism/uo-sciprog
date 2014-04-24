@@ -1,9 +1,9 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
-  <li class="{% if params.circular_query %}active{% else %}{% endif %}">
+  <li class="{% if params.cq %}active{% else %}{% endif %}">
     <a href="#circular" id="circ-tab" data-toggle="tab">Circular query</a>
   </li>
-  <li class="{% if not params.circular_query %}active{% else %}{% endif %}">
+  <li class="{% if not params.cq %}active{% else %}{% endif %}">
     <a href="#rectangular" id="rect-tab" data-toggle="tab">Rectangular query</a>
   </li>
 </ul>
@@ -11,7 +11,7 @@
 <form role="form">
   <div class="row tab-content">
     <br>
-    <div class="tab-pane {% if params.circular_query %}active{% else %}{% endif %}" id="circular">
+    <div class="tab-pane {% if params.cq %}active{% else %}{% endif %}" id="circular">
       <div class="col-xs-2">
         <div class="form-group">
           <label>Origin lat</label>
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="tab-pane {% if not params.circular_query %}active{% else %}{% endif %}" id="rectangular">
+    <div class="tab-pane {% if not params.cq %}active{% else %}{% endif %}" id="rectangular">
       <div class="col-xs-2">
         <div class="form-group">
           <label>Lat 1</label>
@@ -103,7 +103,7 @@
     </div>
   </div>
   <input type="hidden" id="cq" name="cq"
-         {% if params.circular_query %}value="1"{% else %}value="0"{% endif %}>
+         {% if params.cq %}value="1"{% else %}value="0"{% endif %}>
 </form>
 
 <script>
