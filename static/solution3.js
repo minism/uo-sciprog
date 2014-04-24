@@ -25,7 +25,7 @@ var plotEvents = function(projection, events) {
 
 /* Style an individual event circle */
 var styleCircle = function(circle) {
-  return circle.attr('r', 5);
+  return circle.attr('r', 2);
 }
 
 

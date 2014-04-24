@@ -8,6 +8,9 @@ app = flask.Flask(__name__)
 
 
 # TODO fix form positioning
+# TODO fix svg positioning
+# TODO fix reset link
+# TODO deployment
 
 
 # Default parameter values for solutions
@@ -106,7 +109,7 @@ def solution(index):
   if index == 2:
     events = cluster_detection.get_clusters(events)
 
-  # Load view for solution
+  # Otherwise load view for solution
   try:
     return flask.render_template(
       'solution%d.html' % index, events=events, params=params, error=error)

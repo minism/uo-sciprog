@@ -41,12 +41,18 @@
 
 
 <script>
+  // Create data array from server side template
+  var events = [];
+  {% for event in events %}
+  events.push({
+    lat: {{ event.latitude }},
+    lon: {{ event.longitude }},
+  });
+  {% endfor %}
+
   // Init
   $(function() {
-    initSolution([{
-      lon: 0.0,
-      lat: 0.0,
-    }]);
+    initSolution(events);
   });
 </script>
 
