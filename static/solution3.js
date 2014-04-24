@@ -13,7 +13,7 @@ window.initSolution = function(events) {
 /* Plot event data */
 var plotEvents = function(projection, events) {
   var circle = d3.select('svg').selectAll('.event').data(events).enter()
-    .append('circle').attr('class', 'event');
+      .append('circle').attr('class', 'event');
   styleCircle(circle);
 
   // Project onto map

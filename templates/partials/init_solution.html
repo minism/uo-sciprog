@@ -5,7 +5,8 @@
   events.push({
     lat: {{ event.latitude }},
     lon: {{ event.longitude }},
-    m: {{ event.magnitude }}
+    m: {{ event.magnitude }},
+    y: {{ event.year }},
   });
   {% endfor %}
 
