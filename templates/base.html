@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/simplex.min.css">
+  <title>{% block title %}sciprog{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+</head>
+
+
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <ul class="nav navbar-nav">
+      <li><a href="/1">Solution 1</a></li>
+      <li><a href="/2">Solution 2</a></li>
+      <li><a href="/3">Solution 3</a></li>
+      <li><a href="/4">Solution 4</a></li>
+      <li><a href="/5">Solution 5</a></li>
+      <li><a href="/6">Solution 6</a></li>
+    </ul>
+  </div>
+
+  <div class="container-fluid">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
