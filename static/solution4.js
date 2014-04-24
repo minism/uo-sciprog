@@ -29,12 +29,12 @@ var plotEvents = function(events) {
 }
 
 
-/* Coordinate transformation function for charts */
+/* Coordinate transformation functions for charts */
 var transform_x = function(ev) {
   var pos = (ev.y - STARTYEAR) / (ENDYEAR - STARTYEAR);
   return pos * WIDTH;
 }
-
-var transform_y = function(event) {
-  return 300;
+var transform_y = function(ev) {
+  var pos = (ev.lat + 90) / 180;
+  return HEIGHT - pos * HEIGHT;
 }
