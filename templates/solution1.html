@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Solution 1</h1>
+<div class="row">
+  <div class="col-xs-12">
+  <h1>Event counter</h1>
+  <p>
+    <a href="/">View source code for this solution.</a>
+  </p>
+
+  {% include "event_form.html" %}
+
+  <h2>Results</h2>
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Depth</th>
+          <th>Magnitude</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for event in events %}
+        <tr>
+          <td>{{ event.year }}</td>
+          <td>{{ event.latitude }}</td>
+          <td>{{ event.longitude }}</td>
+          <td>{{ event.depth }}</td>
+          <td>{{ event.magnitude }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock %}

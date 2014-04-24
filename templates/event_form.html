@@ -1,0 +1,48 @@
+<form role="form">
+  <div class="row">
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>Origin latitude</label>
+        <input type="text" class="form-control" name="lat"
+               value="{{params.latitude|default("", True)}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>Origin longitude</label>
+        <input type="text" class="form-control" name="lon"
+               value="{{params.longitude|default("", True)}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>Radius</label>
+        <input type="text" class="form-control" name="r"
+               value="{{params.radius|default("", True)}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>Start year</label>
+        <input type="text" class="form-control" name="s"
+               value="{{params.start_year|default("", True)}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>End year</label>
+        <input type="text" class="form-control" name="e"
+               value="{{params.end_year|default("", True)}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+      <div class="form-group">
+        <label>Magnitude threshold</label>
+        <input type="text" class="form-control" name="m"
+               value="{{params.threshold|default("", True)}}">
+      </div>
+    </div>
+  </div>
+  <input type="submit" class="btn btn-primary">
+  <a href="/1/" class="btn btn-default">Reset</a>
+</form>
