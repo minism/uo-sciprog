@@ -27,7 +27,7 @@
 {% block content %}
 
 <div class="col-xs-12">
-  {% include "event_form.html" %}
+  {% include "partials/event_form.html" %}
 </div>
 
 {% endblock %}
@@ -38,22 +38,6 @@
 <script src="/static/lib/topojson.v1.min.js"></script>
 <script src="/static/solution3.js"></script>
 
-
-
-<script>
-  // Create data array from server side template
-  var events = [];
-  {% for event in events %}
-  events.push({
-    lat: {{ event.latitude }},
-    lon: {{ event.longitude }},
-  });
-  {% endfor %}
-
-  // Init
-  $(function() {
-    initSolution(events);
-  });
-</script>
+{% include "partials/init_solution.html" %}
 
 {% endblock %}

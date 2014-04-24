@@ -1,0 +1,16 @@
+<script>
+  // Create client data array from server side data
+  var events = [];
+  {% for event in events %}
+  events.push({
+    lat: {{ event.latitude }},
+    lon: {{ event.longitude }},
+    m: {{ event.magnitude }}
+  });
+  {% endfor %}
+
+  // Init
+  $(function() {
+    initSolution(events);
+  });
+</script>
