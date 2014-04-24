@@ -12,17 +12,25 @@ DEG2RAD = math.pi/180.0
 EARTH_RADIUS = 3960
 
 
-def get_events(latitude=None, longitude=None, radius=None,
-               start_year=None, end_year=None, threshold=None):
+def get_events(origin_latitude=None, origin_longitude=None, radius=None,
+               start_latitude=None, start_longitude=None,
+               end_latitude=None, end_longitude=None,
+               start_year=None, end_year=None, threshold=None,
+               circular_query=True):
   """Given some parameters, return a filtered table of earthquake events.
 
   Args:
-    latitude: (float) Latitude of origin point.
-    longitude: (float) Longitude of origin point.
+    latitude: (float) Latitude of origin point for radius query.
+    longitude: (float) Longitude of origin point for radius query.
     radius: (float) Radius in miles from origin.
+    start_latitude: (float) Lower latitude bound for fixed query.
+    start_longitude: (float) Lower longitude bound for fixed query.
+    end_latitude: (float) Upper latitude bound for fixed query.
+    end_longitude: (float) Upper longitude bound for fixed query.
     start: (int) Year to begin filtering from.
     end: (int) Year to stop filtering from.
     threshold: (float) Magnitude threshold to filter above.
+    circular_query: Whether to use a circular or rectangular query.
 
   Returns:
     List of Event objects, sorted by time.
@@ -35,10 +43,20 @@ def get_events(latitude=None, longitude=None, radius=None,
       event = parse_row(row)
       exclude = False
 
-      # Determine if event is within specified area
-      if latitude is not None and longitude is not None and radius is not None:
-        if geo_distance(
-            event.latitude, event.longitude, latitude, longitude) > radius:
+      if circular_query:
+        # Determine if event is within specified area for a radius query
+        if all( (origin_latitude, origin_longitude, radius) ):
+          if geo_distance(
+              event.latitude, event.longitude, 
+              origin_latitude, origin_longitude) > radius:
+            exclude = True
+
+      else:
+        # Determine if event is within specified area for a rectangular query
+        if (start_latitude is not None and event.latitude < start_latitude or
+            start_longitude is not None and event.longitude < start_longitude or
+            end_latitude is not None and event.latitude > end_latitude or
+            end_longitude is not None and event.longitude > end_longitude):
           exclude = True
 
       # Determine if event is within specified time
@@ -48,7 +66,7 @@ def get_events(latitude=None, longitude=None, radius=None,
         exclude = True
 
       # Determine if event magnitude exceeds threshold
-      if threshold and event.magnitude < threshold:
+      if threshold is not None and event.magnitude < threshold:
         exclude = True
 
       # If the event wasn't filtered out, store it

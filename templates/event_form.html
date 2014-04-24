@@ -1,48 +1,107 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+  <li class="{% if params.circular_query %}active{% else %}{% endif %}">
+    <a href="#circular" id="circ-tab" data-toggle="tab">Circular query</a>
+  </li>
+  <li class="{% if not params.circular_query %}active{% else %}{% endif %}">
+    <a href="#rectangular" id="rect-tab" data-toggle="tab">Rectangular query</a>
+  </li>
+</ul>
+
 <form role="form">
-  <div class="row">
-    <div class="col-xs-2">
-      <div class="form-group">
-        <label>Origin latitude</label>
-        <input type="text" class="form-control" name="lat"
-               value="{{params.latitude|default("", True)}}">
+  <div class="row tab-content">
+    <br>
+    <div class="tab-pane {% if params.circular_query %}active{% else %}{% endif %}" id="circular">
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Origin lat</label>
+          <input type="text" class="form-control" name="olat"
+                 value="{{params.origin_latitude|default("", True)}}">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Origin lon</label>
+          <input type="text" class="form-control" name="olon"
+                 value="{{params.origin_longitude|default("", True)}}">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Radius</label>
+          <input type="text" class="form-control" name="r"
+                 value="{{params.radius|default("", True)}}">
+        </div>
       </div>
     </div>
-    <div class="col-xs-2">
-      <div class="form-group">
-        <label>Origin longitude</label>
-        <input type="text" class="form-control" name="lon"
-               value="{{params.longitude|default("", True)}}">
+    <div class="tab-pane {% if not params.circular_query %}active{% else %}{% endif %}" id="rectangular">
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Lat 1</label>
+          <input type="text" class="form-control" name="slat"
+                 value="{{params.start_latitude|default("", True)}}">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Lon 1</label>
+          <input type="text" class="form-control" name="slon"
+                 value="{{params.start_longitude|default("", True)}}">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Lat 2</label>
+          <input type="text" class="form-control" name="elat"
+                 value="{{params.end_latitude|default("", True)}}">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="form-group">
+          <label>Lon 2</label>
+          <input type="text" class="form-control" name="elon"
+                 value="{{params.end_longitude|default("", True)}}">
+        </div>
       </div>
     </div>
-    <div class="col-xs-2">
-      <div class="form-group">
-        <label>Radius</label>
-        <input type="text" class="form-control" name="r"
-               value="{{params.radius|default("", True)}}">
-      </div>
-    </div>
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <div class="form-group">
         <label>Start year</label>
         <input type="text" class="form-control" name="s"
                value="{{params.start_year|default("", True)}}">
       </div>
     </div>
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <div class="form-group">
         <label>End year</label>
         <input type="text" class="form-control" name="e"
                value="{{params.end_year|default("", True)}}">
       </div>
     </div>
-    <div class="col-xs-2">
+    <div class="col-xs-1">
       <div class="form-group">
-        <label>Magnitude threshold</label>
+        <label>Magnitude</label>
         <input type="text" class="form-control" name="m"
                value="{{params.threshold|default("", True)}}">
       </div>
     </div>
   </div>
+  <input type="hidden" id="cq" name="cq"
+         {% if params.circular_query %}value="1"{% else %}value="0"{% endif %}>
   <input type="submit" class="btn btn-primary">
   <a href="/1/" class="btn btn-default">Reset</a>
 </form>
+
+<script>
+
+  // Simple listener to change query type even if both forms are populated.
+  $(function() {
+    $('#circ-tab').click(function() {
+      $('#cq').attr('value', 1);
+    });
+    $('#rect-tab').click(function() {
+      $('#cq').attr('value', 0);
+    });
+  });
+
+</script>

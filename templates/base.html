@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/simplex.min.css">
+  <script src="/static/lib/jquery.min.js"></script>
   <title>{% block title %}sciprog - {{ title }}{% endblock %}</title>
   <meta name="description" content="">
   <meta name="author" content="">
@@ -41,6 +42,12 @@
         {% if error %}
         <div class="alert alert-danger">
           <strong>Error: </strong>{{ error }}
+        </div>
+        {% endif %}
+
+        {% if warning %}
+        <div class="alert alert-warning">
+          <strong>Error: </strong>{{ warning }}
         </div>
         {% endif %}
       </div>
