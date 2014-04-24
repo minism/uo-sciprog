@@ -4,11 +4,10 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="/static/lib/bootstrap/css/simplex.min.css">
-  <title>{% block title %}sciprog{% endblock %}</title>
+  <title>{% block title %}sciprog - {{ title }}{% endblock %}</title>
   <meta name="description" content="">
   <meta name="author" content="">
 </head>
-
 
 <body>
   <div class="navbar navbar-default" role="navigation">
@@ -23,7 +22,22 @@
   </div>
 
   <div class="container">
-    {% block content %}{% endblock %}
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>{{ title }}</h1>
+        <p>
+          <a href="/">View source code for this solution.</a>
+        </p>
+
+        {% if error %}
+        <div class="alert alert-danger">
+          <strong>Error: </strong>{{ error }}
+        </div>
+        {% endif %}
+      </div>
+
+      {% block content %}{% endblock %}
+    </div>
   </div>
 
   <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>

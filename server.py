@@ -6,21 +6,43 @@ from program import event_counter
 app = flask.Flask(__name__)
 
 
-def build_event_counter_parameters(request_args, latitude=None, longitude=None,
-                                   radius=None, start_year=None, end_year=None,
-                                   threshold=None):
+# Mapping of URL parameter names to event counter parameter names
+PARAMETER_NAME_MAP = {
+  'lat': 'latitude',
+  'lon': 'longitude',
+  'r': 'radius',
+  's': 'start_year',
+  'e': 'end_year',
+  'm': 'threshold',
+}
+
+
+def build_parameters(request_args, **defaults):
   """Build a dictionary of event counter parameters.
 
   Use provided defaults, overridden by any arguments present in the request.
   """
   return {
-    'latitude': request_args.get('lat', latitude),
-    'longitude': request_args.get('lon', longitude),
-    'radius': request_args.get('r', radius),
-    'start_year': request_args.get('s', start_year),
-    'end_year': request_args.get('e', end_year),
-    'threshold': request_args.get('m', threshold),
-  }
+      event_param: request_args.get(url_param, defaults.get(event_param))
+      for url_param, event_param in PARAMETER_NAME_MAP.items()}
+
+
+def validate_input(request_args):
+  """Validate request args and return an error, if any."""
+  for key in ('s', 'e'):
+    if request_args.get(key):
+      try:
+        int(request_args[key])
+      except ValueError:
+        return "%s must be an integer" % PARAMETER_NAME_MAP[key]
+  for key in ('lat', 'lon', 'r', 'm'):
+    if request_args.get(key):
+      try:
+        float(request_args[key])
+      except ValueError:
+        return "%s must be a number" % PARAMETER_NAME_MAP[key]
+  return None
+
 
 @app.route('/')
 def home():
@@ -30,10 +52,19 @@ def home():
 @app.route('/1/')
 def solution1():
   # Default input: All events in 100 mile radius of Seattle, WA.
-  params = build_event_counter_parameters(
+  params = build_parameters(
       flask.request.args, latitude=-47.6097, longitude=22.3331, radius=100)
-  events = event_counter.get_events(**params)
-  return flask.render_template('solution1.html', events=events, params=params)
+
+  # Validate input
+  error = validate_input(flask.request.args)
+  if not error:
+    # Process events
+    events = event_counter.get_events(**params)
+  else:
+    events = []
+
+  return flask.render_template(
+      'solution1.html', events=events, params=params, error=error)
 
 
 @app.route('/<int:index>/')
