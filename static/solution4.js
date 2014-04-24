@@ -2,7 +2,7 @@
 var WIDTH = 800;
 var HEIGHT = 600;
 var STARTYEAR = 1900;
-var ENDYEAR = 2007;
+var ENDYEAR = 2008;
 
 
 // Export init function

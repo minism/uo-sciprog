@@ -2,9 +2,32 @@
 
 {% set title = "'What makes people happy' style plot" %}
 
+{% block styles %}
+
+<style>
+  svg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+{% endblock %}
+
 {% block content %}
 
 <div class="col-xs-12">
+  {% include "partials/event_form.html" %}
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/lib/d3.v3.min.js"></script>
+<script src="/static/lib/underscore-min.js"></script>
+<script src="/static/solution5.js"></script>
+
+{% include "partials/init_solution.html" %}
 
 {% endblock %}

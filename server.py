@@ -17,8 +17,8 @@ SOLUTION_PARAMETERS = [
   {'start_longitude': -150, 'end_longitude': -75, 'cq': '0'},
   # Solution 3: All events of magnitude > 7.5
   {'threshold': 7.5},
-  # Solution 5: All events in 100 mile radius of Seattle, WA.
-  {'origin_latitude': 47.6097, 'origin_longitude': -122.3331, 'radius': 100},
+  # Solution 5: All events.
+  {},
 ]
 
 
