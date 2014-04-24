@@ -7,12 +7,6 @@ from program import cluster_detection
 app = flask.Flask(__name__)
 
 
-# TODO fix form positioning
-# TODO fix svg positioning
-# TODO fix reset link
-# TODO deployment
-
-
 # Default parameter values for solutions
 SOLUTION_PARAMETERS = [
   # Solution 1: All events in 100 mile radius of Seattle, WA.
@@ -112,7 +106,8 @@ def solution(index):
   # Otherwise load view for solution
   try:
     return flask.render_template(
-      'solution%d.html' % index, events=events, params=params, error=error)
+      'solution%d.html' % index, events=events, params=params, error=error,
+      index=index)
   except jinja2.exceptions.TemplateNotFound:
     return flask.abort(404)
 
