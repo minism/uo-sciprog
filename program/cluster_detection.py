@@ -7,58 +7,71 @@ import numpy
 import scipy.spatial.distance
 
 
-def get_clusters(events):
-  """Given a list of events, build a list of clusters for the events.
+def get_k_clusters(events, k):
+  """Given a list of events, build a list of K clusters for the events.
 
   The clustering detection algorithm used here is an attempt to implement how I 
   think k-means works, but is completely made up and probably bullshit.  Expect
   this function to have terrible performance.
 
+  The next level of complexity would be a parent algorithm which iterates
+  through values of K to find the lowest value for K that produces the 
+  lowest amount of variance among each cluster.
+
   Args:
     events: List of event_counter.Event objects.
+    k: Number of clusters to evaluate.
 
   Returns:
     List of Cluster objects, sorted by time.
   """
+  centroids = [event_to_point(e) for e in random.sample(events, k)]
+  last_centroids = None
   clusters = []
-  return events
+  while not last_centroids or (set((tuple(x) for x in centroids)) !=
+                               set((tuple(x) for x in last_centroids))):
+    last_centroids = centroids
 
-
-def events_to_points(events):
-  """Convert a list of events to 3 dimensional points"""
-  return [(e.latitude, e.longitude, e.year) for e in events]
-
-
-def get_k_centers(points, k):
-  """Find K three dimensional centers for events"""
-  centers = random.sample(points, k)
-  last_centers = None
-  while not last_centers or set(centers) != set(last_centers):
-    last_centers = centers
-
-    # Build clusters for all points based on current centers
+    # Build clusters for all points based on current centroids
     clusters = [[] for _ in range(k)]
-    for point in points:
-      index = find_closest_point(point, centers)
-      clusters.append(point)
+    for event in events:
+      index = find_closest_centroid(event, centroids)
+      clusters[index].append(event)
 
     # Determine new mean for each cluster
-    centers = []
+    centroids = []
     for cluster in clusters:
-      centers.append(numpy.mean(cluster, axis=0))
-  return centers
+      centroids.append(numpy.mean([event_to_point(e) for e in cluster], axis=0))
 
-
-def find_closest_point(origin, targets):
-  """Given a point and a set of targets, find the closest.
-
-  Returns the index from the centers list.
-  """
-  distances = scipy.spatial.distance.cdist([origin], targets)[0]
-  return distances.argmin()
+  result = []
+  for i, cluster in enumerate(clusters):
+    result.append(Cluster(
+        event_count=len(cluster),
+        latitude=centroids[i][0],
+        longitude=centroids[i][1],
+        year=centroids[i][2],
+        depth=1,
+        magnitude=1
+    ))
+  return result
 
 
 # Data structure representing a cluster
 Cluster = collections.namedtuple(
     'Cluster', ('event_count', 'year', 'latitude',
                 'longitude', 'depth', 'magnitude'))
+
+
+def event_to_point(event):
+  """Convert an event to a 3D point"""
+  return (event.latitude, event.longitude, event.year)
+
+
+def find_closest_centroid(event, centroids):
+  """Given an Event and a set of centroids, find the closest.
+
+  Returns the index from the centroids list.
+  """
+  origin = event_to_point(event)
+  distances = scipy.spatial.distance.cdist([origin], centroids)[0]
+  return distances.argmin()
