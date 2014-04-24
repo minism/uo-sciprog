@@ -1,3 +1,5 @@
+"""Earthquake event counter module."""
+
 import collections
 import math
 
