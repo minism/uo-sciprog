@@ -23,14 +23,14 @@ def get_events(origin_latitude=None, origin_longitude=None, radius=None,
     latitude: (float) Latitude of origin point for radius query.
     longitude: (float) Longitude of origin point for radius query.
     radius: (float) Radius in miles from origin.
-    start_latitude: (float) Lower latitude bound for fixed query.
-    start_longitude: (float) Lower longitude bound for fixed query.
-    end_latitude: (float) Upper latitude bound for fixed query.
-    end_longitude: (float) Upper longitude bound for fixed query.
+    start_latitude: (float) Lower latitude bound for rectangular query.
+    start_longitude: (float) Lower longitude bound for rectangular query.
+    end_latitude: (float) Upper latitude bound for rectangular query.
+    end_longitude: (float) Upper longitude bound for rectangular query.
     start: (int) Year to begin filtering from.
     end: (int) Year to stop filtering from.
     threshold: (float) Magnitude threshold to filter above.
-    circular_query: Whether to use a circular or rectangular query.
+    circular_query: Whether to perform a circular or rectangular query.
 
   Returns:
     List of Event objects, sorted by time.
