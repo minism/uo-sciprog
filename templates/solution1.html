@@ -4,38 +4,40 @@
 
 {% block content %}
 
-<div class="col-xs-12">
-  {% include "partials/event_form.html" %}
+<div class="row">
+  <div class="col-xs-12">
+    {% include "partials/event_form.html" %}
 
-  <h2>{{ events|length }} events</h2>
-  <table class="table table-condensed table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Depth</th>
-        <th>Magnitude</th>
-      </tr>
-    </thead>
+    <h2>{{ events|length }} events</h2>
+    <table class="table table-condensed table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Depth</th>
+          <th>Magnitude</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      {% for event in events[:1000] %}
-      <tr>
-        <td>{{ event.year }}</td>
-        <td>{{ event.latitude }}</td>
-        <td>{{ event.longitude }}</td>
-        <td>{{ event.depth }}</td>
-        <td>{{ event.magnitude }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      <tbody>
+        {% for event in events[:1000] %}
+        <tr>
+          <td>{{ event.year }}</td>
+          <td>{{ event.latitude }}</td>
+          <td>{{ event.longitude }}</td>
+          <td>{{ event.depth }}</td>
+          <td>{{ event.magnitude }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  {% if events|length > 1000 %}
-  <p>...</p>
-  <p>(Too many results, the table was truncated)</p>
-  {% endif %}
+    {% if events|length > 1000 %}
+    <p>...</p>
+    <p>(Too many results, the table was truncated)</p>
+    {% endif %}
+  </div>
 </div>
 
 {% endblock %}

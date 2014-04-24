@@ -17,6 +17,7 @@ function parseData(data) {
   return _.map(data, function(d) {
     return {
       'Longitude': d.lon,
+      'Latitude': d.lat,
       'Depth': d.d,
       'Magnitude': d.m,
       'Year': d.y,
@@ -79,7 +80,7 @@ function getCorrelation(xArray, yArray) {
 
 var initData = function(data) {
 
-  var xAxis = 'Longitude', yAxis = 'Magnitude';
+  var xAxis = 'Longitude', yAxis = 'Depth';
   var axisOptions = ["Longitude", "Depth", "Magnitude", "Year"];
   // var yAxisOptions = ["Well-being"];
   var descriptions = {
@@ -94,7 +95,7 @@ var initData = function(data) {
   var bounds = getBounds(data, 1);
 
   // SVG AND D3 STUFF
-  var svg = d3.select("#wrap")
+  var svg = d3.select("#chart")
     .append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT);
@@ -106,10 +107,11 @@ var initData = function(data) {
 
   // Build menus
   d3.select('#x-axis-menu')
-    .selectAll('li')
+    .selectAll('button')
     .data(axisOptions)
     .enter()
-    .append('li')
+    .append('button')
+    .attr('class', 'btn btn-default btn-block')
     .text(function(d) {return d;})
     .classed('selected', function(d) {
       return d === xAxis;
@@ -120,26 +122,21 @@ var initData = function(data) {
       updateMenus();
     });
 
-  // d3.select('#y-axis-menu')
-  //   .selectAll('li')
-  //   .data(yAxisOptions)
-  //   .enter()
-  //   .append('li')
-  //   .text(function(d) {return d;})
-  //   .classed('selected', function(d) {
-  //     return d === yAxis;
-  //   })
-  //   .on('click', function(d) {
-  //     yAxis = d;
-  //     updateChart();
-  //     updateMenus();
-  //   });
-
-  // Country name
-  // d3.select('svg g.chart')
-  //   .append('text')
-  //   .attr({'id': 'countryLabel', 'x': 0, 'y': 170})
-  //   .style({'font-size': '80px', 'font-weight': 'bold', 'fill': '#ddd'});
+  d3.select('#y-axis-menu')
+    .selectAll('button')
+    .data(axisOptions)
+    .enter()
+    .append('button')
+    .attr('class', 'btn btn-default btn-block')
+    .text(function(d) {return d;})
+    .classed('selected', function(d) {
+      return d === yAxis;
+    })
+    .on('click', function(d) {
+      yAxis = d;
+      updateChart();
+      updateMenus();
+    });
 
   // Best fit line (to appear behind points)
   d3.select('svg g.chart')
@@ -147,20 +144,23 @@ var initData = function(data) {
     .attr('id', 'bestfit');
 
   // Axis labels
-  // d3.select('svg g.chart')
-  //   .append('text')
-  //   .attr({'id': 'xLabel', 'x': 400, 'y': 670, 'text-anchor': 'middle'})
-  //   .text(descriptions[xAxis]);
+  d3.select('svg g.chart')
+    .append('text')
+    .attr({'id': 'xLabel', 'x': 400, 'y': 670, 'text-anchor': 'middle'})
+    .text(descriptions[xAxis]);
 
-  // d3.select('svg g.chart')
-  //   .append('text')
-  //   .attr('transform', 'translate(-60, 330)rotate(-90)')
-  //   .attr({'id': 'yLabel', 'text-anchor': 'middle'})
-  //   .text('Well-being (scale of 0-10)');
+  d3.select('svg g.chart')
+    .append('text')
+    .attr('transform', 'translate(-60, 330)rotate(-90)')
+    .attr({'id': 'yLabel', 'text-anchor': 'middle'})
+    .text(descriptions[yAxis]);
 
   // Render points
   updateScales();
-  var pointColour = d3.scale.category20b();
+
+  // Color point using latitude
+  var pointColour = d3.scale.linear().domain([-90, 90]).range(["red","blue"]);
+
   d3.select('svg g.chart')
     .selectAll('circle')
     .data(data)
@@ -172,20 +172,7 @@ var initData = function(data) {
     .attr('cy', function(d) {
       return isNaN(d[yAxis]) ? d3.select(this).attr('cy') : yScale(d[yAxis]);
     })
-    .attr('fill', function(d, i) {return pointColour(i);})
-    .style('cursor', 'pointer')
-    .on('mouseover', function(d) {
-      d3.select('svg g.chart #countryLabel')
-        .text(d.Country)
-        .transition()
-        .style('opacity', 1);
-    })
-    .on('mouseout', function(d) {
-      d3.select('svg g.chart #countryLabel')
-        .transition()
-        .duration(1500)
-        .style('opacity', 0);
-    });
+    .attr('fill', function(d, i) {return pointColour(d.Latitude);})
 
   updateChart(true);
   updateMenus();
@@ -221,7 +208,7 @@ var initData = function(data) {
         return isNaN(d[yAxis]) ? d3.select(this).attr('cy') : yScale(d[yAxis]);
       })
       .attr('r', function(d) {
-        return isNaN(d[xAxis]) || isNaN(d[yAxis]) ? 0 : 12;
+        return isNaN(d[xAxis]) || isNaN(d[yAxis]) ? 0 : 6;
       });
 
     // Also update the axes
@@ -236,6 +223,8 @@ var initData = function(data) {
     // Update axis labels
     d3.select('#xLabel')
       .text(descriptions[xAxis]);
+    d3.select('#yLabel')
+      .text(descriptions[yAxis]);
 
     // Update correlation
     var xArray = _.map(data, function(d) {return d[xAxis];});

@@ -7,6 +7,9 @@ from program import cluster_detection
 app = flask.Flask(__name__)
 
 
+# TODO legend on graphs
+
+
 # Default parameter values for solutions
 SOLUTION_PARAMETERS = [
   # Solution 1: All events in 100 mile radius of Seattle, WA.
@@ -17,8 +20,8 @@ SOLUTION_PARAMETERS = [
   {'start_longitude': -150, 'end_longitude': -75, 'cq': '0'},
   # Solution 3: All events of magnitude > 7.5
   {'threshold': 7.5},
-  # Solution 5: All events.
-  {},
+  # Solution 5: All events in the last 50 years.
+  {'start_year': 1964, 'end_year': 2014},
 ]
 
 
