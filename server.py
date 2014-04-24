@@ -2,6 +2,7 @@ import flask
 import jinja2
 
 from program import event_counter
+from program import cluster_detection
 
 app = flask.Flask(__name__)
 
@@ -10,7 +11,7 @@ app = flask.Flask(__name__)
 
 
 # Default parameter values for solutions
-DEFAULT_PARAMS = [
+SOLUTION_PARAMETERS = [
   # Solution 1: All events in 100 mile radius of Seattle, WA.
   {'origin_latitude': 47.6097, 'origin_longitude': -122.3331, 'radius': 100},
   # Solution 2: All events.
@@ -95,11 +96,15 @@ def home():
 
 @app.route('/<int:index>/')
 def solution(index):
-  params = build_parameters(flask.request.args, **DEFAULT_PARAMS[index - 1])
+  params = build_parameters(flask.request.args, **SOLUTION_PARAMETERS[index - 1])
   error = validate_parameters(params)
   events = []
   if not error:
     events = event_counter.get_events(**filter_query_type(params))
+
+  # Solution 2 uses clusters instead of events for data
+  if index == 2:
+    events = cluster_detection.get_clusters(events)
 
   # Load view for solution
   try:

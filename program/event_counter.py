@@ -19,15 +19,15 @@ def get_events(origin_latitude=None, origin_longitude=None, radius=None,
   """Given some parameters, return a filtered table of earthquake events.
 
   Args:
-    latitude: (float) Latitude of origin point for radius query.
-    longitude: (float) Longitude of origin point for radius query.
+    origin_latitude: (float) Latitude of origin point for radius query.
+    origin_longitude: (float) Longitude of origin point for radius query.
     radius: (float) Radius in miles from origin.
     start_latitude: (float) Lower latitude bound for rectangular query.
     start_longitude: (float) Lower longitude bound for rectangular query.
     end_latitude: (float) Upper latitude bound for rectangular query.
     end_longitude: (float) Upper longitude bound for rectangular query.
-    start: (int) Year to begin filtering from.
-    end: (int) Year to stop filtering from.
+    start_year: (int) Year to begin filtering from.
+    end_year: (int) Year to stop filtering from.
     threshold: (float) Magnitude threshold to filter above.
 
   Returns:

@@ -5,6 +5,34 @@
 {% block content %}
 
 <div class="col-xs-12">
+  {% include "event_form.html" %}
+
+  <h2>{{ events|length }} clusters</h2>
+  <table class="table table-condensed table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th># Events</th>
+        <th>Mean year</th>
+        <th>Mean latitude</th>
+        <th>Mean longitude</th>
+        <th>Mean depth</th>
+        <th>Mean magnitude</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for event in events[:1000] %}
+      <tr>
+        <td>1</td>
+        <td>{{ event.year }}</td>
+        <td>{{ event.latitude }}</td>
+        <td>{{ event.longitude }}</td>
+        <td>{{ event.depth }}</td>
+        <td>{{ event.magnitude }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock %}
