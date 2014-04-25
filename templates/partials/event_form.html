@@ -6,6 +6,9 @@
   <li class="{% if not params.cq %}active{% else %}{% endif %}">
     <a href="#rectangular" id="rect-tab" data-toggle="tab">Rectangular query</a>
   </li>
+  <li>
+    <a href="#sample" id="sample-tab" data-toggle="tab">Sample queries</a>
+  </li>
 </ul>
 
 <form role="form">
@@ -63,6 +66,25 @@
           <input type="text" class="form-control" name="elon"
                  value="{{params.end_longitude|default("", True)}}">
         </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="sample">
+      <div class="col-xs-12">
+        <ul>
+          <li><a href="?olat=47.6097&olon=-122.3331&r=100&cq=1&slat=&slon=&elat=&elon=&s=&e=&m=">
+            All events within 100 miles of Seattle, WA.
+          </a></li>
+          <li><a href="?slon=-150&elon=-75&olat=&olon=&r=&slat=&elat=&s=&e=&m=&cq=0">
+            All events between longitudes -150 to -75.
+          </a></li>
+          <li><a href="?m=7.5&olat=&olon=&r=&slat=&slon=&elat=&elon=&s=&e=&cq=1">
+            All events of magnitude > 7.5.
+          </a></li>
+          <li><a href="?s=1964&e=2014&olat=&olon=&r=&slat=&slon=&elat=&elon=&m=&cq=1">
+            All events in the past 50 years.
+          </a></li>
+        </ul>
       </div>
     </div>
   </div> <!-- Row -->
