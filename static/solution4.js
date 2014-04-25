@@ -59,20 +59,33 @@ var plotYearData = function(yearData) {
       .style("text-anchor", "end")
       .text("Average magnitude")
 
+  // Setup tooltip
+  var popup = d3.tip()
+      .attr('class', 'popup')
+      .offset([-10, 0])
+      .html(function(d) {
+        return d.year + " - average magnitude " + d.magnitude.toFixed(3);
+      })
+  svg.call(popup);
+
+  var width = Math.floor(WIDTH / (yearData.length + 1)) -
+               Math.floor(100 / yearData.length) - 1;
+
   // Plot events
   svg.selectAll('.bar').data(yearData).enter()
       .append('rect')
       .attr('class', 'bar')
       .attr('x', function(ev) { return x(ev.year) })
-      .attr('width', 5)
+      .attr('width', width)
       .attr('y', function(ev) { return y(ev.magnitude) })
-      .attr('height', function(ev) { return height - y(ev.magnitude) });
+      .attr('height', function(ev) { return height - y(ev.magnitude) })
+      .on('mouseover', popup.show)
+      .on('mouseout', popup.hide);
 };
 
 
 /* Calculate mean magnitudes for all years */
 var mergeYearData = function (events) {
-  console.log(events);
   var years = {};
   _.map(events, function(ev) {
     years[ev.y] = years[ev.y] === undefined ? [] : years[ev.y]

@@ -18,8 +18,20 @@
     shape-rendering: crispEdges;
   }
 
+  .bar {
+    fill: #000;
+  }
   .bar:hover {
-    fill: blue;
+    fill: #d9230f;
+  }
+
+  .popup {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
   }
 </style>
 
@@ -38,6 +50,7 @@
 {% block scripts %}
 
 <script src="/static/lib/d3.v3.min.js"></script>
+<script src="/static/lib/d3-tip.js"></script>
 <script src="/static/lib/underscore-min.js"></script>
 <script src="/static/solution4.js"></script>
 
