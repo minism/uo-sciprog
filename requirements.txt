@@ -1,4 +1,7 @@
 Flask==0.10.1
+gunicorn==18.0
+
+# Custom buildpack necessary for numpy heroku deployment:
+# http://stackoverflow.com/questions/9819968/running-scipy-on-heroku
 numpy==1.7.0
 scipy==0.11.0
-gunicorn==18.0
