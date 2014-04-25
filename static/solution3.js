@@ -13,8 +13,12 @@ window.initSolution = function(events) {
 /* Plot event data */
 var plotEvents = function(projection, events) {
   var circle = d3.select('svg').selectAll('.event').data(events).enter()
-      .append('circle').attr('class', 'event');
-  styleCircle(circle);
+      .append('circle')
+      .attr('class', 'event')
+      .attr('r', function(ev) {
+        // Use magnitude cubed for radius to visualize variance better
+        return ev.m * ev.m * ev.m / 100;
+      });
 
   // Project onto map
   circle.attr('transform', function(ev) {
@@ -23,16 +27,10 @@ var plotEvents = function(projection, events) {
 };
 
 
-/* Style an individual event circle */
-var styleCircle = function(circle) {
-  return circle.attr('r', 2);
-}
-
-
 /* Initialize the mercator projection and invoke callback with it */
 var createProjection = function(callback) {
   // Create SVG element
-  var width = 800, height = 600;
+  var width = 960, height = 700;
   var svg = d3.select("#wrap").append("svg")
       .attr("width", width)
       .attr("height", height);
