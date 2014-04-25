@@ -10,7 +10,7 @@
     {% set use_k = True %}
     {% include "partials/event_form.html" %}
 
-    <h2>{{ events|length }} clusters <small>(Random sample set limited to 1000 for performance)</small></h2>
+    <h2>{{ events|length }} clusters <small>(Event sample set limited to first 1000 for performance concerns)</small></h2>
     <table class="table table-condensed table-striped table-bordered table-hover">
       <thead>
         <tr>

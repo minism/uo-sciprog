@@ -27,7 +27,7 @@ def get_k_clusters(events, k, limit=None):
     List of Cluster objects, sorted by time.
   """
   if limit and len(events) > limit:
-    events = random.sample(events, limit)
+    events = events[:limit]
   k = min(len(events), k)
   centroids = map(event_to_point, random.sample(events, k))
   last_centroids = None
