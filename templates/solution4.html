@@ -10,6 +10,17 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar:hover {
+    fill: blue;
+  }
 </style>
 
 {% endblock %}
@@ -27,6 +38,7 @@
 {% block scripts %}
 
 <script src="/static/lib/d3.v3.min.js"></script>
+<script src="/static/lib/underscore-min.js"></script>
 <script src="/static/solution4.js"></script>
 
 {% include "partials/init_solution.html" %}
