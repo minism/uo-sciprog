@@ -17,7 +17,7 @@ var plotEvents = function(projection, events) {
       .attr('class', 'event')
       .attr('r', function(ev) {
         // Use magnitude cubed for radius to visualize variance better
-        return ev.m * ev.m * ev.m / 100;
+        return ev.m * ev.m * ev.m / 90;
       });
 
   // Project onto map
@@ -30,8 +30,8 @@ var plotEvents = function(projection, events) {
 /* Initialize the mercator projection and invoke callback with it */
 var createProjection = function(callback) {
   // Create SVG element
-  var width = 960, height = 700;
-  var svg = d3.select("#wrap").append("svg")
+  var width = 1024, height = 768;
+  var svg = d3.select("body").append("svg")
       .attr("width", width)
       .attr("height", height);
 
@@ -59,6 +59,4 @@ var createProjection = function(callback) {
     // Invoke callback
     callback(projection);
   });
-
-  // d3.select(self.frameElement).style("height", height + "px");
 };
