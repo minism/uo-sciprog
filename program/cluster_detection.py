@@ -7,7 +7,7 @@ import numpy
 import scipy.spatial.distance
 
 
-def get_k_clusters(events, k):
+def get_k_clusters(events, k, limit=None):
   """Given a list of events, build a list of K clusters for the events.
 
   The clustering detection algorithm used here is an attempt to implement how I 
@@ -21,11 +21,15 @@ def get_k_clusters(events, k):
   Args:
     events: List of event_counter.Event objects.
     k: Number of clusters to evaluate.
+    limit: (Optional) object limit for performance reasons.
 
   Returns:
     List of Cluster objects, sorted by time.
   """
-  centroids = [event_to_point(e) for e in random.sample(events, k)]
+  if limit and len(events) > limit:
+    events = random.sample(events, limit)
+  k = min(len(events), k)
+  centroids = map(event_to_point, random.sample(events, k))
   last_centroids = None
   clusters = []
   while not last_centroids or (set((tuple(x) for x in centroids)) !=
@@ -41,10 +45,11 @@ def get_k_clusters(events, k):
     # Determine new mean for each cluster
     centroids = []
     for cluster in clusters:
-      centroids.append(numpy.mean([event_to_point(e) for e in cluster], axis=0))
+      centroids.append(numpy.mean(map(event_to_point, cluster), axis=0))
 
   result = []
   for i, cluster in enumerate(clusters):
+    print len(cluster)
     result.append(Cluster(
         event_count=len(cluster),
         latitude=centroids[i][0],

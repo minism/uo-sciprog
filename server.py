@@ -98,7 +98,8 @@ def home():
 
 @app.route('/<int:index>/')
 def solution(index):
-  params = build_parameters(flask.request.args, **SOLUTION_PARAMETERS[index - 1])
+  args = flask.request.args
+  params = build_parameters(args, **SOLUTION_PARAMETERS[index - 1])
   error = validate_parameters(params)
   events = []
   if not error:
@@ -106,9 +107,15 @@ def solution(index):
 
   # Solution 2 uses clusters instead of events for data
   if index == 2:
-    events = cluster_detection.get_clusters(events)
+    # try:
+      k = int(args.get('k', 10) or 10)
+      events = cluster_detection.get_k_clusters(events, k, limit=1000)
+      params['k'] = k
+    # except ValueError:
+    #   error = "Number of clusters must be an integer"
+    #   print error
 
-  # Otherwise load view for solution
+  # Load template for solution
   try:
     return flask.render_template(
       'solution%d.html' % index, events=events, params=params, error=error,

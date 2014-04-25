@@ -89,7 +89,18 @@
                value="{{params.threshold|default("", True)}}">
       </div>
     </div>
+    {% if use_k %}
+    <div class="col-xs-1">
+      <div class="form-group">
+        <label>#clusters</label>
+        <input type="text" class="form-control" name="k"
+               value="{{params.k}}">
+      </div>
+    </div>
+    <div class="col-xs-2">
+    {% else %}
     <div class="col-xs-3">
+    {% endif %}
       <br>
       <input type="submit" class="btn btn-primary">
       <a href="/{{ index }}/" class="btn btn-default">Reset</a>

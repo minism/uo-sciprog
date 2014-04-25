@@ -6,9 +6,11 @@
 
 <div class="row">
   <div class="col-xs-12">
+
+    {% set use_k = True %}
     {% include "partials/event_form.html" %}
 
-    <h2>{{ events|length }} clusters</h2>
+    <h2>{{ events|length }} clusters <small>(Random sample set limited to 1000 for performance)</small></h2>
     <table class="table table-condensed table-striped table-bordered table-hover">
       <thead>
         <tr>
@@ -22,14 +24,14 @@
       </thead>
 
       <tbody>
-        {% for event in events[:1000] %}
+        {% for cluster in events %}
         <tr>
-          <td>1</td>
-          <td>{{ event.year }}</td>
-          <td>{{ event.latitude }}</td>
-          <td>{{ event.longitude }}</td>
-          <td>{{ event.depth }}</td>
-          <td>{{ event.magnitude }}</td>
+          <td>{{ cluster.event_count }}</td>
+          <td>{{ cluster.year }}</td>
+          <td>{{ cluster.latitude }}</td>
+          <td>{{ cluster.longitude }}</td>
+          <td>{{ cluster.depth }}</td>
+          <td>{{ cluster.magnitude }}</td>
         </tr>
         {% endfor %}
       </tbody>
