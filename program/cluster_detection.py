@@ -49,7 +49,6 @@ def get_k_clusters(events, k, limit=None):
 
   result = []
   for i, cluster in enumerate(clusters):
-    print len(cluster)
     result.append(Cluster(
         event_count=len(cluster),
         latitude=centroids[i][0],
