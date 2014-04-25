@@ -1,5 +1,5 @@
 // Timeline plot of event data using d3.js
-var WIDTH = 800;
+var WIDTH = 1024;
 var HEIGHT = 600;
 
 
@@ -14,7 +14,7 @@ window.initSolution = function(events) {
 /* Create the chart layout and plot year data */
 var plotYearData = function(yearData) {
   // Create SVG element
-  var svg = d3.select("#wrap").append("svg")
+  var svg = d3.select("body").append("svg")
       .attr("width", WIDTH)
       .attr("height", HEIGHT);
 
@@ -24,8 +24,9 @@ var plotYearData = function(yearData) {
 
   // Create axes
   var years = _.pluck(yearData, 'year')
+  var minYear = _.min(years), maxYear = _.max(years);
   var x = d3.scale.linear()
-      .domain([_.min(years), _.max(years)])
+      .domain([minYear, maxYear + 1])
       .range([padding, width]);
 
   var magnitudes = _.pluck(yearData, 'magnitude')
@@ -47,6 +48,8 @@ var plotYearData = function(yearData) {
       .attr("transform", "translate(0," + (height + 5) + ")")
       .call(xAxis)
     .append("text")
+      .text("Year")
+      .attr("transform", "translate(" + width / 2 + ", 40)");
 
   svg.append("g")
       .attr("class", "y axis")
@@ -57,19 +60,20 @@ var plotYearData = function(yearData) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Average magnitude")
+      .text("Total magnitude")
 
   // Setup tooltip
   var popup = d3.tip()
       .attr('class', 'popup')
       .offset([-10, 0])
       .html(function(d) {
-        return d.year + " - average magnitude " + d.magnitude.toFixed(3);
+        return d.year + " - " + d.count + " earthquakes with " + 
+               d.magnitude.toFixed(1) + " total magnitude";
       })
   svg.call(popup);
 
-  var width = Math.floor(WIDTH / (yearData.length + 1)) -
-               Math.floor(100 / yearData.length) - 1;
+  // Compute bar width
+  var width = WIDTH / (maxYear - minYear + 10) - 1;
 
   // Plot events
   svg.selectAll('.bar').data(yearData).enter()
@@ -84,21 +88,26 @@ var plotYearData = function(yearData) {
 };
 
 
-/* Calculate mean magnitudes for all years */
+/* Calculate properties for all years */
 var mergeYearData = function (events) {
   var years = {};
+
+  // Group events by year
   _.map(events, function(ev) {
     years[ev.y] = years[ev.y] === undefined ? [] : years[ev.y]
     years[ev.y].push(parseFloat(ev.m))
   });
+
+  // Determine sum magnitude for each year
   _.map(years, function(magnitudes, year) {
     var sum = _.reduce(magnitudes, function(a, b) { return a + b; }, 0);
-    years[year] = sum / magnitudes.length;
+    years[year] = [sum, magnitudes.length];
   });
 
-  return _.map(years, function(magnitude, year) {
+  return _.map(years, function(val, year) {
     return {
-      magnitude: magnitude,
+      magnitude: val[0],
+      count: val[1],
       year: parseInt(year)
     }
   });
